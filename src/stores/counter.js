@@ -1,12 +1,25 @@
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
+import axios from "axios";
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
+export const useStoreApi = defineStore("state", {
+  state: () => {
+    return {
+      showInfo: false,
+      showInfoCreate: false,
+      users: []
+    };
+  },
+  actions: {
+    async saveState() {
+      try {
+        await axios
+          .get(`https://6415ac7e351c4aed490c5c4f.mockapi.io/api/v1/users`)
+          .then((res) => {
+            this.users = res.data;
+          });
+      } catch (error) {
+        this.alertErro = true;
+      }
+    },
   }
-
-  return { count, doubleCount, increment }
-})
+});
