@@ -2,15 +2,37 @@
 import router from "@/router";
 import { storeToRefs } from "pinia";
 import { useStoreApi } from "../stores/counter";
+import { ref } from "vue";
+import { computed } from "vue";
+
 const useStateApi = useStoreApi();
 const { users } = storeToRefs(useStateApi);
+const valueEmail = ref("");
+const valuePassword = ref("");
+const loginWrong = ref(false);
+
+const usersReturnApi = computed(() => {
+  return users.value;
+});
 
 function backHome() {
     router.push({ name: 'ladingPage' });
     useStateApi.showInfo = false
 }
 function verifyLogin(){
-    console.log(users.value , 'user')
+    usersReturnApi.value.every((users)=>{
+        if(users.login === valueEmail.value && users.password == valuePassword.value){
+            useStateApi.showInfo = false
+            useStateApi.showHome = false;
+            loginWrong.value = false;
+            router.push({ name: 'areaLogada' })
+            return false
+        }
+        else {
+            loginWrong.value = true;
+            return true
+        }
+    })
 }
 </script>
 
@@ -18,9 +40,10 @@ function verifyLogin(){
 <template>
     <div class="divPrincipalCard">
         <label for="">Email</label>
-        <input type="text">
+        <input type="text" v-model="valueEmail">
         <label for="">Senha</label>
-        <input type="text">
+        <input type="text" v-model="valuePassword">
+        <p v-if="loginWrong" class="wrong">Usuário ou senha incorretos, por favor tente novamente</p>
         <button class="buttonVolt" @click="verifyLogin()">Enviar</button>
         <button @click="backHome()" class="buttonVolt">Voltar</button>
     </div>
@@ -40,7 +63,9 @@ function verifyLogin(){
     padding: 30px 0;
     box-shadow: 0px 0px 25px 0px #000000;
 }
-
+.wrong{
+    color: red;
+}
 @media (max-width: 650px) {
     .divPrincipalCard {
         scale: 0.7;

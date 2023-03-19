@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ladingPage from '../views/ladingPage.vue';
 import sobreNos from '../views/sobreNos.vue';
 import contatenos from'../views/contateNos.vue';
+import areaLogada from '../views/areaLogada.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -19,6 +21,11 @@ const router = createRouter({
       path: '/contatenos',
       name: 'contatenos',
       component: contatenos
+    },
+    {
+      path: '/areaLogada',
+      name: 'areaLogada',
+      component: areaLogada
     },
     // {
     //   path: '/about',

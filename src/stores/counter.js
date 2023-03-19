@@ -6,7 +6,8 @@ export const useStoreApi = defineStore("state", {
     return {
       showInfo: false,
       showInfoCreate: false,
-      users: []
+      users: [],
+      showHome: true,
     };
   },
   actions: {
