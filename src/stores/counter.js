@@ -22,5 +22,15 @@ export const useStoreApi = defineStore("state", {
         this.alertErro = true;
       }
     },
+    async sendUser(payload){
+      try {
+        await axios.post('https://6415ac7e351c4aed490c5c4f.mockapi.io/api/v1/users', payload)
+        .then((res)=>{
+          console.log(res, 'repos')
+        })
+      } catch (error) {
+        this.alertErro = true;
+      }
+    }
   }
 });

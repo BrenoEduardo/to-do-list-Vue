@@ -24,7 +24,7 @@ function openModalCreate(){
 <template>
     <div>
         <nav class="nav">
-            <img src="../assets/logo.png" alt="">
+            <img src="../assets/logo.png" alt="" @click="changeHomePage('ladingPage')">
             <div class="nav__divPrincipal">
                 <div class="menu">
                     <span class="pointer" @click="changeHomePage('ladingPage')">Página Inicial</span>
@@ -123,7 +123,7 @@ function openModalCreate(){
 }
 
 img {
-    width: 23vw;
+    width: 15vw;
     cursor: pointer;
 }
 

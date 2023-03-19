@@ -1,28 +1,54 @@
 <script setup>
 import router from "@/router";
-// import { storeToRefs } from "pinia";
 import { useStoreApi } from "../stores/counter";
+import { ref } from "vue";
+
 
 const useStateApi = useStoreApi();
+const valueEmail = ref("");
+const valuePassword = ref("");
+const valueName = ref("");
 function backHome() {
     router.push({ name: 'ladingPage' });
     useStateApi.showInfoCreate = false
+}
+// [{ "createdAt": "2023-03-18T09:32:03.147Z", "name": "Isaac Thompson", "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/552.jpg", "login": "Monte.Streich5@yahoo.com", "password": "MEeuSlBDlSYf6G5", "active": false, "id": "1" }]
+function sendNewUser() {
+    const payload = [
+        {
+            "name":valueName.value,
+            "avatar": null,
+            "login": valueEmail.value,
+            "password": valuePassword.value,
+            "id": "82"
+        }
+    ]
+    useStateApi.sendUser(payload);
+    backHome()
 }
 </script>
 
 
 <template>
     <div class="divPrincipalCard">
-        <label for="">Email</label>
-        <input type="text">
-        <label for="">Senha</label>
-        <input type="text">
-        <label for="">Data de nascimento</label>
-        <input type="date">
-        <label for="">CPF</label>
-        <input type="text">
-        <button class="buttonVolt">Enviar</button>
-        <button @click="backHome()" class="buttonVolt">Voltar</button>
+        <div class="inputs">
+            <div class="labelInput">
+                <label for="">Email</label>
+                <input type="text" v-model="valueEmail">
+            </div>
+            <div class="labelInput">
+                <label for="">Senha</label>
+                <input type="text" v-model="valuePassword">
+            </div>
+            <div class="labelInput">
+                <label for="">Nome</label>
+                <input type="text" v-model="valueName">
+            </div>
+        </div>
+        <div class="buttons">
+            <button @click="sendNewUser()" class="buttonVolt">Enviar</button>
+            <button @click="backHome()" class="buttonVolt">Voltar</button>
+        </div>
     </div>
 </template>
 
@@ -57,7 +83,8 @@ function backHome() {
     font-weight: bold;
     cursor: pointer;
     margin: 15px 0;
-    background-color: #5c4842;;
+    background-color: #5c4842;
+    ;
 }
 
 .buttonVolt:hover {
