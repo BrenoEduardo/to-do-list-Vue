@@ -24,6 +24,7 @@ function verifyLogin() {
         if (users.login === valueEmail.value && users.password == valuePassword.value) {
             useStateApi.showInfo = false
             useStateApi.showHome = false;
+            useStateApi.infoUser = users
             loginWrong.value = false;
             router.push({ name: 'areaLogada' })
             return false
@@ -65,7 +66,7 @@ function verifyLogin() {
     justify-content: center;
     color: white;
     background-color: #84a586;
-    width: 500px;
+    width: 400px;
     max-height: 700px;
     border-radius: 20px;
     padding: 10px 0;

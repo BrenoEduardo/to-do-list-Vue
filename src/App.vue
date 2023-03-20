@@ -1,14 +1,11 @@
-<script setup>
-// import ladingPage from './views/ladingPage.vue';
+<script setup>;
 import navBar from './components/navBar.vue';
 import { RouterView } from 'vue-router';
 import { storeToRefs } from "pinia";
 import { useStoreApi } from "./stores/counter";
 import { computed } from "vue";
 import areaLogada from './views/areaLogada.vue';
-// import { ref } from "vue";
 
-// const windom = ref()
 const useStateApi = useStoreApi();
 const { showHome } = storeToRefs(useStateApi);
 

@@ -8,6 +8,8 @@ export const useStoreApi = defineStore("state", {
       showInfoCreate: false,
       users: [],
       showHome: true,
+      infoUser: [],
+      openAddTask: false
     };
   },
   actions: {
@@ -25,9 +27,6 @@ export const useStoreApi = defineStore("state", {
     async sendUser(payload){
       try {
         await axios.post('https://6415ac7e351c4aed490c5c4f.mockapi.io/api/v1/users', payload)
-        .then((res)=>{
-          console.log(res, 'repos')
-        })
       } catch (error) {
         this.alertErro = true;
       }

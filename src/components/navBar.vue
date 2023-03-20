@@ -17,7 +17,7 @@ function openModalLogin() {
     useStateApi.showInfo = true
     useStateApi.saveState();
 }
-function openModalCreate(){
+function openModalCreate() {
     useStateApi.showInfoCreate = true
 }
 </script>
@@ -81,6 +81,11 @@ function openModalCreate(){
     align-items: center;
     color: white;
 
+    img {
+        width: 15vw;
+        cursor: pointer;
+    }
+
     &__divPrincipal {
         display: flex;
         width: 100%;
@@ -108,7 +113,7 @@ function openModalCreate(){
             border: none;
             border-radius: 20px;
             width: 10vw;
-            height: 5vh;
+            height: 2vh;
             color: white;
             background-color: #5c4842;
             font-size: 1.2vw;
@@ -121,12 +126,7 @@ function openModalCreate(){
         }
     }
 }
-
-img {
-    width: 15vw;
-    cursor: pointer;
-}
-
 .pointer {
     cursor: pointer;
-}</style>
+}
+</style>

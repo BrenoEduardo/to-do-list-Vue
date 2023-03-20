@@ -14,15 +14,16 @@ function backHome() {
 }
 // [{ "createdAt": "2023-03-18T09:32:03.147Z", "name": "Isaac Thompson", "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/552.jpg", "login": "Monte.Streich5@yahoo.com", "password": "MEeuSlBDlSYf6G5", "active": false, "id": "1" }]
 function sendNewUser() {
-    const payload = [
+    const payload = 
         {
             "name":valueName.value,
+            "active": false,
+            "createdAt":"2023-03-19T12:29:12.784Z",
             "avatar": null,
             "login": valueEmail.value,
             "password": valuePassword.value,
-            "id": "82"
+            "id": "81"
         }
-    ]
     useStateApi.sendUser(payload);
     backHome()
 }
