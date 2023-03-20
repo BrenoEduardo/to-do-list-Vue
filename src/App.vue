@@ -8,10 +8,12 @@ import areaLogada from './views/areaLogada.vue';
 
 const useStateApi = useStoreApi();
 const { showHome } = storeToRefs(useStateApi);
-
 const showHomeFalse = computed(() => {
   return showHome.value;
 });
+if(window.location.href.includes('/areaLogada')){
+  useStateApi.showHome = false
+}
 </script>
 
 <template>
