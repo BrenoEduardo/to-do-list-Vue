@@ -3,15 +3,29 @@
 import { storeToRefs } from "pinia";
 import { useStoreApi } from "../stores/counter";
 import { computed } from "vue";
+import { onMounted } from "vue";
+import mostrarInfoTaks from "./mostrarInfoTaks.vue";
 import adicionarTarefa from "../components/adicionarTarefa.vue";
 import router from "@/router";
+import { ref } from "vue";
+
 
 const useStateApi = useStoreApi();
 const { infoUser } = storeToRefs(useStateApi);
 const { openAddTask } = storeToRefs(useStateApi);
+const { openInfoTask } = storeToRefs(useStateApi);
+const showAvatarUndefined = ref("");
+
 const usersReturnApi = computed(() => {
     return infoUser.value;
 });
+
+onMounted(() => {
+  if(!usersReturnApi.value.avatar){
+    showAvatarUndefined.value = true;
+  }
+});
+
 const mock = [
     {
         "descricao": "Encher a garrafa"
@@ -28,46 +42,56 @@ function backHome() {
     useStateApi.infoUser = [];
     router.push({ name: 'ladingPage' });
 }
-function openTask(){
+function openTask() {
     useStateApi.openAddTask = true;
     console.log(openAddTask, 'openAddTask')
+}
+function showTask(){
+    useStateApi.openInfoTask = true
 }
 </script>
 
 <template>
     <div class="menuPrincipal">
         <div class="menuLogado">
-            <img :src="usersReturnApi.avatar" alt="">
+            <img :src="usersReturnApi.avatar" alt="" v-if="!showAvatarUndefined">
+            <img src="../assets/avatar.webp" alt="" v-else>
             <button @click="backHome()">Finalizar sessao</button>
         </div>
-        <div class="infoLogado">
-            <h2>Minhas tarefas</h2>
-            <div class="lista">
-                <div v-for="mock in mock" :key="mock.descricao" class="cards">
-                    <input type="checkbox">
-                    <div class="info">
-                        {{ mock.descricao }}
+        <div v-if="!openInfoTask">
+            <div class="infoLogado">
+                <h2>Minhas tarefas</h2>
+                <div class="lista">
+                    <div v-for="mock in mock" :key="mock.descricao" class="cards">
+                        <input type="checkbox">
+                        <div class="info" @click="showTask()">
+                            {{ mock.descricao }}
+                        </div>
+                        <br>
                     </div>
-                    <br>
+                </div>
+            </div>
+            <div class="barraFinal">
+                <button>Excluir tarefa</button>
+                <button @click="openTask()">Adicionar tarefa</button>
+            </div>
+            <div v-if="openAddTask" v-bind:class="{ openModal: openAddTask, viewCardNone: !openAddTask }" class="infoApi">
+                <div class="card">
+                    <adicionarTarefa />
                 </div>
             </div>
         </div>
-        <div class="barraFinal">
-            <button>Excluir tarefa</button>
-            <button @click="openTask()">Adicionar tarefa</button>
+        <div v-if="openInfoTask">
+            <mostrarInfoTaks/>
         </div>
-        <div v-if="openAddTask" v-bind:class="{ openModal: openAddTask, viewCardNone: !openAddTask }" class="infoApi">
-        <div class="card">
-            <adicionarTarefa />
-        </div>
-    </div>
     </div>
 </template>
 
 <style lang="scss">
 .openModal {
-  display: block;
+    display: block;
 }
+
 .infoApi {
     position: fixed;
     z-index: 1;
@@ -80,6 +104,7 @@ function openTask(){
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
 }
+
 .viewCardNone {
     display: none;
     opacity: 0.9;
@@ -91,6 +116,7 @@ function openTask(){
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
 .menuPrincipal {
     min-height: 100%;
     min-width: 100%;

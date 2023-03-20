@@ -17,3 +17,5 @@ Mas caso queira outro usuario e senha, e só pegar qualquer um do retorna da API
 
 https://6415ac7e351c4aed490c5c4f.mockapi.io/api/v1/users
 
+Você também pode criar um usuário e depois logar com ele
+

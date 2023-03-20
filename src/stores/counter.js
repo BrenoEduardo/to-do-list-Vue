@@ -9,7 +9,8 @@ export const useStoreApi = defineStore("state", {
       users: [],
       showHome: true,
       infoUser: [],
-      openAddTask: false
+      openAddTask: false,
+      openInfoTask: false
     };
   },
   actions: {

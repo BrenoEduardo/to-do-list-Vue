@@ -18,12 +18,12 @@ function sendNewUser() {
         {
             "name":valueName.value,
             "active": false,
-            "createdAt":"2023-03-19T12:29:12.784Z",
+            "createdAt":new Date(),
             "avatar": null,
             "login": valueEmail.value,
             "password": valuePassword.value,
-            "id": "81"
         }
+        console.log(payload , 'payload')
     useStateApi.sendUser(payload);
     backHome()
 }
