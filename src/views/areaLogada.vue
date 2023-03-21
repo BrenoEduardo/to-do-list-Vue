@@ -253,13 +253,22 @@ function filterTask() {
     text-align: center;
     padding: 10px;
     background-color: #f1f5f8;
-    overflow: scroll;
+    overflow-y: scroll;
 
     input[type=checkbox] {
         margin-right: 10px;
     }
 }
-
+.infoLogado::-webkit-scrollbar-track {
+  background-color: rgb(255 255 255 / 73%);
+}
+.infoLogado::-webkit-scrollbar {
+  width: 6px;
+  background: rgb(255 255 255 / 73%);;
+}
+.infoLogado::-webkit-scrollbar-thumb {
+  background: #cdcdcd;;
+}
 .barraFinal {
     min-height: 8%;
     min-width: 8%;
