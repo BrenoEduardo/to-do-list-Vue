@@ -6,22 +6,27 @@ import { ref } from "vue";
 const useStateApi = useStoreApi();
 const valueTitle = ref("");
 const valueDescription = ref("");
-
+const error = ref(false)
 function fecharModal() {
     useStateApi.openAddTask = false
 }
 function saveTask() {
-    const payload = {
-        "createdAt": new Date(),
-        "name": valueTitle.value,
-        "done": false,
-        "descricao": valueDescription.value,
+    if (valueTitle.value || valueDescription.value) {
+        const payload = {
+            "createdAt": new Date(),
+            "name": valueTitle.value,
+            "done": false,
+            "descricao": valueDescription.value,
+        }
+        useStateApi.postTasks(payload)
+        setTimeout(() => {
+            useStateApi.getTasks()
+        }, 500);
+        useStateApi.openAddTask = false;
     }
-    useStateApi.postTasks(payload)
-    setTimeout(() => {
-        useStateApi.getTasks()
-    }, 500);
-    useStateApi.openAddTask = false;
+    else {
+        error.value = true
+    }
 }
 </script>
 
@@ -35,6 +40,7 @@ function saveTask() {
             <div class="pdb-20">
                 <h2>Descrição</h2>
                 <textarea name="" id="" cols="30" rows="10" class="descricao" v-model="valueDescription"></textarea>
+                <p v-if="error">Preencha algum campo para salvar</p>
             </div>
         </div>
         <div class="buttonsTask">
@@ -50,6 +56,12 @@ function saveTask() {
     background: #ebe7de;
     border-radius: 10px;
     box-shadow: 0px 0px 10px 1px #30302e;
+
+    p {
+        color: red;
+        font-size: 12px;
+        text-align: center;
+    }
 
     input {
         border: none;
@@ -92,6 +104,7 @@ function saveTask() {
     .task {
         padding: 100px 100px 40px 100px;
     }
+
     textarea {
         width: 300px;
         height: 250px;
@@ -100,5 +113,4 @@ function saveTask() {
 
 .pdb-20 {
     padding-bottom: 20px;
-}
-</style>
+}</style>

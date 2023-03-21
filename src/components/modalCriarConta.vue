@@ -8,21 +8,33 @@ const useStateApi = useStoreApi();
 const valueEmail = ref("");
 const valuePassword = ref("");
 const valueName = ref("");
+const errorEmail = ref(false)
+const errorPassord = ref(false)
 function backHome() {
     router.push({ name: 'ladingPage' });
     useStateApi.showInfoCreate = false
 }
-// [{ "createdAt": "2023-03-18T09:32:03.147Z", "name": "Isaac Thompson", "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/552.jpg", "login": "Monte.Streich5@yahoo.com", "password": "MEeuSlBDlSYf6G5", "active": false, "id": "1" }]
+
 function sendNewUser() {
-    const payload = 
+    if (!valueEmail.value.includes('@')) {
+        errorEmail.value = true;
+        errorPassord.value = false;
+    }
+    else if(valuePassword.value < 3){
+        errorPassord.value = true;
+        errorEmail.value = false;
+    }
+    else if(valueEmail.value && valuePassword.value && valueName.value) {
+        const payload =
         {
-            "name":valueName.value,
+            "name": valueName.value,
             "active": false,
             "login": valueEmail.value,
             "password": valuePassword.value,
         }
-    useStateApi.sendUser(payload);
-    backHome()
+        useStateApi.sendUser(payload);
+        backHome()
+    }
 }
 </script>
 
@@ -32,16 +44,19 @@ function sendNewUser() {
         <div class="inputs">
             <div class="labelInput">
                 <label for="">Email</label>
-                <input type="text" v-model="valueEmail">
+                <input type="text" v-model="valueEmail" placeholder="Email com @">
             </div>
+            <p v-if="errorEmail">Email incorreto</p>
             <div class="labelInput">
                 <label for="">Senha</label>
-                <input type="text" v-model="valuePassword">
+                <input type="text" v-model="valuePassword" placeholder="No mínimo 3 caractéres">
             </div>
+            <p v-if="errorPassord">Senha com no mínimo 3 caractéres</p>
             <div class="labelInput">
                 <label for="">Nome</label>
                 <input type="text" v-model="valueName">
             </div>
+            <p v-if="error">Alguns dos campos não estão preenchidos</p>
         </div>
         <div class="buttons">
             <button @click="sendNewUser()" class="buttonVolt">Enviar</button>
@@ -63,6 +78,12 @@ function sendNewUser() {
     border-radius: 20px;
     padding: 30px 0;
     box-shadow: 0px 0px 25px 0px #000000;
+
+    p {
+        color: red;
+        font-size: 12px;
+        text-align: center;
+    }
 }
 
 @media (max-width: 650px) {

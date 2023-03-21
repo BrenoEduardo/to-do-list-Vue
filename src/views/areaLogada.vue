@@ -58,6 +58,17 @@ function selectInfo(task) {
         taskDelete.value.push(task)
     }
 }
+function atualizarTask(){
+    taskDelete.value.map((task, index) => {
+        setTimeout(() => {
+            task.done = true
+            useStateApi.updateTasks(task)
+        }, 500 * index);
+    })
+    setTimeout(() => {
+        useStateApi.getTasks()
+    }, 1500);
+}
 function deleteTask() {
     taskDelete.value.map((task, index) => {
         setTimeout(() => {
@@ -67,7 +78,6 @@ function deleteTask() {
     setTimeout(() => {
         useStateApi.getTasks()
     }, 1500);
-    taskDelete.value = [];
 }
 function filterTask() {
     let filt;
@@ -125,6 +135,7 @@ function filterTask() {
             </div>
             <div class="barraFinal">
                 <button @click="deleteTask()">Excluir tarefa</button>
+                <button @click="atualizarTask()">Concluir tarefas</button>
                 <button @click="openTask()">Adicionar tarefa</button>
             </div>
             <div v-if="openAddTask" v-bind:class="{ openModal: openAddTask, viewCardNone: !openAddTask }" class="infoApi">
@@ -254,7 +265,7 @@ function filterTask() {
     min-width: 8%;
     height: 8vh;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
 
     button:nth-child(1) {
@@ -262,6 +273,9 @@ function filterTask() {
     }
 
     button:nth-child(2) {
+        background-color: #418841;
+    }
+    button:nth-child(3) {
         background-color: #64dd64;
     }
 }

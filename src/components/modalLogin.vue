@@ -89,7 +89,6 @@ function verifyLogin() {
         display: flex;
         flex-direction: column;
         padding: 10px;
-        align-items: center;
 
         label {
             padding-bottom: 10px;
@@ -105,6 +104,7 @@ function verifyLogin() {
 
     .wrong {
         color: red;
+        font-size: 12px;
     }
 
     .buttonVolt {
