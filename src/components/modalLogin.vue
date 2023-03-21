@@ -22,9 +22,10 @@ function backHome() {
 function verifyLogin() {
     usersReturnApi.value.every((users) => {
         if (users.login === valueEmail.value && users.password == valuePassword.value) {
-            useStateApi.showInfo = false
+            useStateApi.showInfo = false;
             useStateApi.showHome = false;
-            useStateApi.infoUser = users
+            useStateApi.infoUser = users;
+            localStorage.setItem('login', JSON.stringify(users))
             loginWrong.value = false;
             router.push({ name: 'areaLogada' })
             return false
@@ -96,7 +97,7 @@ function verifyLogin() {
 
         input {
             width: 300px;
-            padding: 3px;
+            padding: 10px;
             border-radius: 10px;
             border: none;
         }

@@ -1,10 +1,30 @@
 <script setup>
 import { useStoreApi } from "../stores/counter";
+import { computed } from "vue";
 
 const useStateApi = useStoreApi();
 
+const usersReturnApi = computed(() => {
+    return useStateApi.taskEspecifif;
+});
 function voltarHomeLogada() {
     useStateApi.openInfoTask = false
+}
+function getTaskTimeOut(){
+    setTimeout(() => {
+        useStateApi.getTasks()
+    }, 500);
+}
+function excluirTask() {
+    useStateApi.deleteTasks(usersReturnApi.value.id)
+    getTaskTimeOut();
+    voltarHomeLogada();
+}
+function updateTask(){
+    usersReturnApi.value.done = true
+    useStateApi.updateTasks(usersReturnApi.value)
+    getTaskTimeOut();
+    voltarHomeLogada();
 }
 </script>
 
@@ -14,20 +34,12 @@ function voltarHomeLogada() {
             <h2>Descrição</h2>
         </div>
         <div class="infoPrincipal">
-            *Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis molestias saepe atque impedit quo blanditiis
-            incidunt delectus et amet accusamus, omnis corporis assumenda similique eveniet? Aspernatur illo debitis aliquid
-            molestiae?
-            *Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum accusamus assumenda voluptas beatae quia
-            eligendi! Incidunt doloribus repellendus dignissimos possimus autem saepe inventore voluptatum provident quae,
-            cupiditate qui debitis ab.
-            *Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae expedita enim voluptas provident.
-            Cupiditate dolores vitae consequatur? Assumenda quaerat dolor, impedit perferendis tempore consequuntur vitae
-            velit eos praesentium, vel doloribus.
+            {{ usersReturnApi.descricao }}
         </div>
         <div class="buttonsTaks">
             <button @click="voltarHomeLogada()">Voltar</button>
-            <button>Excluir tarefa</button>
-            <button>Concluir tarefa</button>
+            <button @click="excluirTask()">Excluir tarefa</button>
+            <button @click="updateTask()">Concluir tarefa</button>
         </div>
     </div>
 </template>
@@ -42,9 +54,13 @@ function voltarHomeLogada() {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    .infoPrincipal{
+
+    .infoPrincipal {
         max-width: 500px;
+        text-align: justify;
+        overflow-wrap: anywhere;
     }
+
     h2 {
         padding-bottom: 10px;
     }
@@ -71,14 +87,14 @@ function voltarHomeLogada() {
 }
 
 @media (min-width: 768px) {
-    .buttonsTaks{
+    .buttonsTaks {
         display: flex;
-        width: 60%;
+        width: 650px;
+
         button {
             margin: 0px 10px 0px 10px !important;
             max-width: 300px;
         }
     }
 
-}
-</style>
+}</style>

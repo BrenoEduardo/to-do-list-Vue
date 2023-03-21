@@ -1,4 +1,5 @@
-<script setup>;
+<script setup>
+;
 import navBar from './components/navBar.vue';
 import { RouterView } from 'vue-router';
 import { storeToRefs } from "pinia";
@@ -11,18 +12,20 @@ const { showHome } = storeToRefs(useStateApi);
 const showHomeFalse = computed(() => {
   return showHome.value;
 });
-if(window.location.href.includes('/areaLogada')){
+if (window.location.href.includes('/areaLogada')) {
   useStateApi.showHome = false
 }
 </script>
 
 <template>
-  <div class="bckImage" v-if="showHomeFalse">
-    <navBar />
-    <RouterView />
+  <div v-if="showHomeFalse" class="bckImage">
+    <div class="blur">
+      <navBar />
+      <RouterView />
+    </div>
   </div>
   <div v-else>
-    <areaLogada/>
+    <areaLogada />
   </div>
 </template>
 
@@ -35,6 +38,13 @@ if(window.location.href.includes('/areaLogada')){
   background-position: center;
   background-size: cover;
   box-sizing: border-box;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.blur {
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 100%;
   height: 100vh;
 }
 </style>

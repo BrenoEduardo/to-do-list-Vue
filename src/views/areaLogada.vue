@@ -14,65 +14,117 @@ const useStateApi = useStoreApi();
 const { infoUser } = storeToRefs(useStateApi);
 const { openAddTask } = storeToRefs(useStateApi);
 const { openInfoTask } = storeToRefs(useStateApi);
-const showAvatarUndefined = ref("");
+const { returnTask } = storeToRefs(useStateApi);
+const taskDelete = ref([]);
+const selected = ref('');
 
 const usersReturnApi = computed(() => {
     return infoUser.value;
 });
 
-onMounted(() => {
-  if(!usersReturnApi.value.avatar){
-    showAvatarUndefined.value = true;
-  }
+const tasksReturns = computed(() => {
+    return returnTask.value;
 });
 
-const mock = [
-    {
-        "descricao": "Encher a garrafa"
-    },
-    {
-        "descricao": "Fazer API"
-    },
-    {
-        "descricao": "Fazer Request"
+useStateApi.getTasks();
+onMounted(() => {
+    const login = JSON.parse(localStorage.getItem('login'))
+    if(login){
+        useStateApi.infoUser = login
     }
-]
+});
+
+
 function backHome() {
+    localStorage.removeItem('login')
     useStateApi.showHome = true;
     useStateApi.infoUser = [];
+    useStateApi.openInfoTask = false;
     router.push({ name: 'ladingPage' });
 }
 function openTask() {
     useStateApi.openAddTask = true;
-    console.log(openAddTask, 'openAddTask')
 }
-function showTask(){
+function showTask(task) {
+    useStateApi.taskEspecifif = task
     useStateApi.openInfoTask = true
+}
+function selectInfo(task) {
+    if (taskDelete.value.includes(task)) {
+        var indice = taskDelete.value.indexOf(task)
+        taskDelete.value.splice(indice, 1)
+    }
+    else {
+        taskDelete.value.push(task)
+    }
+}
+function deleteTask() {
+    taskDelete.value.map((task, index) => {
+        setTimeout(() => {
+            useStateApi.deleteTasks(task.id)
+        }, 500 * index);
+    })
+    setTimeout(() => {
+        useStateApi.getTasks()
+    }, 1500);
+    taskDelete.value = [];
+}
+function filterTask() {
+    let filt;
+    switch (selected.value) {
+        case "false":
+            filt = false
+            break;
+        case "true":
+            filt = true
+            break;
+    }
+    if (selected.value) {
+        useStateApi.getTasks();
+        setTimeout(() => {
+            useStateApi.changeTasks(filt)
+        }, 200);
+    }
+    else {
+        useStateApi.getTasks();
+    }
 }
 </script>
 
 <template>
     <div class="menuPrincipal">
         <div class="menuLogado">
-            <img :src="usersReturnApi.avatar" alt="" v-if="!showAvatarUndefined">
-            <img src="../assets/avatar.webp" alt="" v-else>
+            <img :src="usersReturnApi.avatar" alt="image de perfil">
             <button @click="backHome()">Finalizar sessao</button>
         </div>
         <div v-if="!openInfoTask">
             <div class="infoLogado">
                 <h2>Minhas tarefas</h2>
+                <div class="select">
+                    <select name="" id="" @change="filterTask()" v-model="selected">
+                        <option value="">Todas</option>
+                        <option value="false">Ativas</option>
+                        <option value="true">Concluidas</option>
+                    </select>
+                </div>
                 <div class="lista">
-                    <div v-for="mock in mock" :key="mock.descricao" class="cards">
-                        <input type="checkbox">
-                        <div class="info" @click="showTask()">
-                            {{ mock.descricao }}
+                    <div v-for="tasksReturn in tasksReturns" :key="tasksReturn.name" class="cards">
+                        <input type="checkbox" @click="selectInfo(tasksReturn)">
+                        <div class="info" @click="showTask(tasksReturn)">
+                            <span>{{ tasksReturn.name }}</span>
+                            <div v-if="tasksReturn.done">
+                                ✅
+                            </div>
+                            <div v-else>
+                                🕗
+                            </div>
                         </div>
                         <br>
                     </div>
                 </div>
             </div>
             <div class="barraFinal">
-                <button>Excluir tarefa</button>
+                <button @click="deleteTask()">Excluir tarefa</button>
                 <button @click="openTask()">Adicionar tarefa</button>
             </div>
             <div v-if="openAddTask" v-bind:class="{ openModal: openAddTask, viewCardNone: !openAddTask }" class="infoApi">
@@ -82,7 +134,7 @@ function showTask(){
             </div>
         </div>
         <div v-if="openInfoTask">
-            <mostrarInfoTaks/>
+            <mostrarInfoTaks />
         </div>
     </div>
 </template>
@@ -94,7 +146,7 @@ function showTask(){
 
 .infoApi {
     position: fixed;
-    z-index: 1;
+    z-index: 9999;
     padding-top: 100px;
     left: 0;
     top: 0;
@@ -137,11 +189,12 @@ function showTask(){
 }
 
 .lista {
-    padding: 50px 0px 0px 0px;
+    padding: 30px 0px 0px 0px;
 
     .cards {
         padding: 15px;
         display: flex;
+        justify-content: center;
     }
 }
 
@@ -149,13 +202,18 @@ function showTask(){
     background-color: white;
     border-radius: 10px;
     text-align: start;
-    padding-left: 20px;
+    padding: 10px;
+    justify-content: space-between;
     height: 50px;
     display: flex;
     align-items: center;
     border: none;
     width: 100%;
     cursor: pointer;
+
+    span {
+        overflow-wrap: anywhere;
+    }
 }
 
 .menuLogado {
@@ -184,6 +242,7 @@ function showTask(){
     text-align: center;
     padding: 10px;
     background-color: #f1f5f8;
+    overflow: scroll;
 
     input[type=checkbox] {
         margin-right: 10px;
@@ -205,4 +264,28 @@ function showTask(){
     button:nth-child(2) {
         background-color: #64dd64;
     }
-}</style>
+}
+
+.select {
+    padding-top: 20px;
+
+    select {
+        border: none;
+        border-radius: 10px;
+        width: 150px;
+        height: 42px;
+        text-align: center;
+        border: 1px solid darkgrey;
+    }
+}
+
+@media (min-width: 600px) {
+    .menuLogado {
+        justify-content: space-around;
+    }
+
+    .info {
+        width: 50%;
+    }
+}
+</style>

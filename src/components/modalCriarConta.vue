@@ -18,12 +18,9 @@ function sendNewUser() {
         {
             "name":valueName.value,
             "active": false,
-            "createdAt":new Date(),
-            "avatar": null,
             "login": valueEmail.value,
             "password": valuePassword.value,
         }
-        console.log(payload , 'payload')
     useStateApi.sendUser(payload);
     backHome()
 }
