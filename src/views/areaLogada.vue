@@ -203,7 +203,7 @@ function filterTask() {
 
 .lista {
     padding: 30px 0px 0px 0px;
-
+    display: grid;
     .cards {
         padding: 15px;
         display: flex;
@@ -311,6 +311,11 @@ function filterTask() {
 
     .info {
         width: 50%;
+    }
+}
+@media (min-width: 1024px) {
+    .lista{
+        grid-template-columns: 1fr 1fr;
     }
 }
 </style>
