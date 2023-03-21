@@ -89,15 +89,16 @@ function filterTask() {
             filt = true
             break;
     }
-    if (selected.value) {
-        useStateApi.getTasks();
-        setTimeout(() => {
-            useStateApi.changeTasks(filt)
-        }, 200);
-    }
-    else {
-        useStateApi.getTasks();
-    }
+    useStateApi.returnTask = [];
+        if (selected.value) {
+            useStateApi.getTasks();
+            setTimeout(() => {
+                useStateApi.changeTasks(filt)
+            }, 200);
+        }
+        else {
+            useStateApi.getTasks();
+        }
 }
 </script>
 
@@ -118,11 +119,12 @@ function filterTask() {
                     </select>
                 </div>
                 <div class="lista">
-                    <div v-for="tasksReturn in tasksReturns" :key="tasksReturn.name" class="cards">
+                    <div v-for="tasksReturn in tasksReturns" :key="tasksReturn.id" class="cards">
                         <input type="checkbox" @click="selectInfo(tasksReturn)">
                         <div class="info" @click="showTask(tasksReturn)">
                             <span>{{ tasksReturn.name }}</span>
                             <div v-if="tasksReturn.done">
+                                {{ tasksReturn.done }}
                                 ✅
                             </div>
                             <div v-else>
