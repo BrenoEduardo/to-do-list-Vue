@@ -318,23 +318,6 @@ function activeHamburg() {
         transform: scale(1.1)
     }
 
-    &__divPrincipal {
-        display: flex;
-        width: 100%;
-        justify-content: space-around;
-
-        .menu {
-            width: 50%;
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.2vw;
-
-            span {
-                display: flex;
-                align-items: center;
-            }
-        }
-    }
 }
 .active{
         position: fixed;
