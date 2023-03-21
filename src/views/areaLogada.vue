@@ -124,7 +124,6 @@ function filterTask() {
                         <div class="info" @click="showTask(tasksReturn)">
                             <span>{{ tasksReturn.name }}</span>
                             <div v-if="tasksReturn.done">
-                                {{ tasksReturn.done }}
                                 ✅
                             </div>
                             <div v-else>
